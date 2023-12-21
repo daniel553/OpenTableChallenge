@@ -2,10 +2,11 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "com.opentable.domain"
+    namespace = "com.opentable.data"
     compileSdk = 34
 
     defaultConfig {
@@ -33,8 +34,13 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
     implementation(libs.core.ktx)
+
+    //Room database
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
