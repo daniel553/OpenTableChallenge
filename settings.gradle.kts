@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "OpenTableChallenge"
 include(":app")
+include(":domain")

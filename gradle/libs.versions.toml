@@ -34,6 +34,7 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
 daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

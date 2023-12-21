@@ -55,6 +55,8 @@ android {
 }
 
 dependencies {
+    //Libs
+    implementation(project(":domain"))
 
     //Core and foundation
     implementation(libs.core.ktx)
