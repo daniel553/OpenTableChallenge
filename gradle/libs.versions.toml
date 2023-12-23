@@ -12,6 +12,7 @@ kotlin = "1.9.21"
 ksp = "1.9.21-1.0.16"
 lifecycle-runtime-ktx = "2.6.2"
 room-version = "2.6.1"
+coroutines = "1.7.3"
 
 [libraries]
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
@@ -24,11 +25,13 @@ core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger-hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "dagger-hilt" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref ="dagger-hilt" }
 hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hilt-navigation" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name="kotlinx-coroutines-test", version.ref = "coroutines"}
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle-runtime-ktx" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
 ui = { group = "androidx.compose.ui", name = "ui" }
 ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
