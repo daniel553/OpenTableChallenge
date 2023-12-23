@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import com.opentable.challenge.model.reservationItemPreviewMock
 import com.opentable.challenge.ui.theme.OpenTableChallengeTheme
@@ -27,10 +28,25 @@ fun ReservationListScreen(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         when (state) {
-            ReservationListState.Error -> ReservationListError()
-            ReservationListState.Loading -> ReservationListShrimmer()
-            is ReservationListState.Success -> ReservationListView(state.list,
-                onSelect = { onEvent(ReservationListEvent.onSelected(it)) })
+            ReservationListState.Error -> ReservationListError(
+                modifier.testTag(ReservationListScreenViewTag.ReservationListError.name)
+            )
+
+            ReservationListState.Loading -> ReservationListShrimmer(
+                modifier.testTag(ReservationListScreenViewTag.ReservationListShrimmer.name)
+            )
+
+            is ReservationListState.Success -> ReservationListView(
+                state.list,
+                onSelect = { onEvent(ReservationListEvent.onSelected(it)) },
+                modifier = Modifier.testTag(ReservationListScreenViewTag.ReservationListView.name)
+            )
         }
     }
+}
+
+enum class ReservationListScreenViewTag {
+    ReservationListError,
+    ReservationListShrimmer,
+    ReservationListView
 }

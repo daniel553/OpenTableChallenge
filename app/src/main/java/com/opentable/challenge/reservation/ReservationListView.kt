@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -68,10 +67,32 @@ fun ReservationListItemView(
 
 @Composable
 fun ReservationListShrimmer(modifier: Modifier = Modifier) {
-    //TODO("Not yet implemented")
+    Column(modifier = modifier) {
+        //TODO("Not yet implemented")
+        Text("Not yet implemented")
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ReservationListShrimmerPreview() {
+    OpenTableChallengeTheme {
+        ReservationListShrimmer()
+    }
 }
 
 @Composable
 fun ReservationListError(modifier: Modifier = Modifier) {
-    //TODO("Not yet implemented")
+    Column(modifier = modifier) {
+        //TODO("Not yet implemented")
+        Text("Not yet implemented")
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ReservationListErrorPreview() {
+    OpenTableChallengeTheme {
+        ReservationListError()
+    }
 }
