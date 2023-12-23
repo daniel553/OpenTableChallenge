@@ -1,7 +1,9 @@
 package com.opentable.data.reservation
 
 import com.opentable.data.db.Database
+import com.opentable.data.reservation.repo.IReservationLocalDatasource
 import com.opentable.data.reservation.repo.IReservationRepository
+import com.opentable.data.reservation.repo.ReservationLocalDatasource
 import com.opentable.data.reservation.repo.ReservationRepository
 import dagger.Binds
 import dagger.Module
@@ -30,5 +32,5 @@ abstract class ReservationModuleBinder {
 
     @Binds
     @Singleton
-    abstract fun bindReservationLocalDatasource(datasource: ReservationRepository): IReservationRepository
+    abstract fun bindReservationLocalDatasource(datasource: ReservationLocalDatasource): IReservationLocalDatasource
 }
