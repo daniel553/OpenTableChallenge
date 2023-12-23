@@ -3,7 +3,6 @@ package com.opentable.challenge.reservation
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.opentable.challenge.model.ReservationItem
 import com.opentable.challenge.ui.theme.OpenTableChallengeTheme
 import org.junit.Rule
 import org.junit.Test
@@ -16,8 +15,6 @@ internal class ReservationListScreenTest {
     val composeTestRule = createComposeRule()
 
     private lateinit var state: ReservationListState
-    private var currentEvent: ReservationListEvent? = null
-    private val event: (ReservationListEvent) -> Unit = { currentEvent = it }
 
     @Test
     fun whenSuccessState_thenShowReservationListView() {
@@ -47,15 +44,11 @@ internal class ReservationListScreenTest {
     private fun setState() {
         composeTestRule.setContent {
             OpenTableChallengeTheme {
-                ReservationListScreen(state = state, onEvent = event)
+                ReservationListScreen(state = state, onEvent = {})
             }
         }
     }
 
     private fun verifyExists(tag: String) = composeTestRule.onNodeWithTag(tag).assertExists()
 
-
-    private fun reservationItems(count: Int): List<ReservationItem> = (0 until count).map {
-        ReservationItem(it.toLong(), "name$it", it.toLong(), timeString = "1:00 PM")
-    }
 }

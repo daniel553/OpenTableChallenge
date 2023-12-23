@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.opentable.challenge.model.ReservationItem
@@ -26,7 +27,7 @@ fun ReservationListView(
     onSelect: (ReservationItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier) {
+    LazyColumn(modifier = modifier.testTag(ReservationListViewTag.ReservationListViewLazyList.name)) {
         //💡 It's a good practice to define the key of the item
         items(list, key = { reservation -> reservation.id }) { reservation ->
             ReservationListItemView(reservation = reservation, modifier = Modifier.fillMaxWidth()) {
@@ -52,7 +53,9 @@ fun ReservationListItemView(
     modifier: Modifier = Modifier,
     onClick: () -> Unit // Intended to be empty
 ) {
-    Column(modifier = modifier.clickable { onClick() }) {
+    Column(modifier = modifier
+        .testTag(ReservationListViewTag.ReservationListItemView.name.plus(reservation.id))
+        .clickable { onClick() }) {
         Text(
             text = reservation.name.uppercase(),
             style = MaterialTheme.typography.titleMedium
@@ -95,4 +98,9 @@ fun ReservationListErrorPreview() {
     OpenTableChallengeTheme {
         ReservationListError()
     }
+}
+
+enum class ReservationListViewTag {
+    ReservationListViewLazyList,
+    ReservationListItemView,
 }
