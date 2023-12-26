@@ -1,5 +1,8 @@
 package com.opentable.challenge.model
 
+import com.opentable.challenge.util.toTimeString
+import com.opentable.domain.model.Reservation
+
 /**
  * 💡This is a scoped model used in views like "Compose reservation object"
  */
@@ -13,3 +16,16 @@ data class ReservationItem(
 // 💡 Used in previews
 internal fun reservationItemPreviewMock(times: Int): List<ReservationItem> =
     (0 until times).map { ReservationItem(it.toLong(), "Name $it", it.toLong()) }
+
+// Transformations -----------
+
+fun List<Reservation>.toListReservationItem(): List<ReservationItem> = this.map {
+    it.toReservationItem()
+}
+
+fun Reservation.toReservationItem(): ReservationItem = ReservationItem(
+    id = this.id,
+    name = this.name,
+    time = this.time,
+    timeString = this.time.toTimeString()
+)

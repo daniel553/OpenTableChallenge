@@ -11,8 +11,8 @@ android {
 
     defaultConfig {
         minSdk = 26
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        //💡a custom hilt test runner based on Android Junit4 runner
+        testInstrumentationRunner = "com.opentable.data.HiltTestRunner"
     }
 
     buildTypes {
@@ -31,6 +31,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    packaging {
+        resources.excludes += "META-INF/LICENSE*"
+        resources.excludes += "META-INF/NOTICE.txt"
+    }
 }
 
 dependencies {
@@ -41,7 +46,25 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    ksp(libs.hilt.compiler)
+
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    //Hilt
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.hilt.android)
+    kspAndroidTest(libs.hilt.android.compiler)
+
+    //Coroutines
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+
+    //Mockk
+    androidTestImplementation(libs.mockk.android)
+
 }
