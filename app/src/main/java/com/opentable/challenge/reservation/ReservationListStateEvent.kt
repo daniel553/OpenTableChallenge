@@ -14,5 +14,5 @@ sealed interface ReservationListState {
 
 sealed interface ReservationListEvent {
     data class onSelected(val reservation: ReservationItem) : ReservationListEvent
-    // and more
+    data object onAdd: ReservationListEvent
 }

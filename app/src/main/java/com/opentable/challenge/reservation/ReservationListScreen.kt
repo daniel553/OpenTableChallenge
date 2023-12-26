@@ -39,6 +39,7 @@ fun ReservationListScreen(
             is ReservationListState.Success -> ReservationListView(
                 state.list,
                 onSelect = { onEvent(ReservationListEvent.onSelected(it)) },
+                onAdd = { onEvent(ReservationListEvent.onAdd) },
                 modifier = Modifier.testTag(ReservationListScreenViewTag.ReservationListView.name)
             )
         }

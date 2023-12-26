@@ -3,16 +3,25 @@ package com.opentable.challenge.reservation
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DateRange
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.opentable.challenge.R
 import com.opentable.challenge.model.ReservationItem
 import com.opentable.challenge.model.reservationItemPreviewMock
 import com.opentable.challenge.ui.theme.OpenTableChallengeTheme
@@ -25,13 +34,27 @@ import com.opentable.challenge.ui.theme.OpenTableChallengeTheme
 fun ReservationListView(
     list: List<ReservationItem>,
     onSelect: (ReservationItem) -> Unit,
+    onAdd: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier.testTag(ReservationListViewTag.ReservationListViewLazyList.name)) {
-        //💡 It's a good practice to define the key of the item
-        items(list, key = { reservation -> reservation.id }) { reservation ->
-            ReservationListItemView(reservation = reservation, modifier = Modifier.fillMaxWidth()) {
-                onSelect(reservation)
+    if (list.isEmpty()) {
+        //💡empty list placeholder
+        ReservationListEmptyView(
+            onCallToAction = { onAdd() },
+            modifier = modifier
+                .fillMaxWidth()
+                .testTag(ReservationListViewTag.ReservationListViewEmpty.name)
+        )
+    } else {
+        LazyColumn(modifier = modifier.testTag(ReservationListViewTag.ReservationListViewLazyList.name)) {
+            //💡 It's a good practice to define the key of the item
+            items(list, key = { reservation -> reservation.id }) { reservation ->
+                ReservationListItemView(
+                    reservation = reservation,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    onSelect(reservation)
+                }
             }
         }
     }
@@ -42,8 +65,53 @@ fun ReservationListView(
 fun ReservationListViewPreview() {
     val list = reservationItemPreviewMock(5)
     OpenTableChallengeTheme {
-        ReservationListView(list, {})
+        ReservationListView(list, {}, {})
     }
+}
+
+//💡Empty list placeholder when even a "success state" no items are presented
+@Composable
+fun ReservationListEmptyView(onCallToAction: () -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.DateRange, contentDescription = "reservations",
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .width(84.dp)
+                .height(84.dp)
+                .padding(top = 16.dp)
+        )
+        Text(
+            text = stringResource(id = R.string.reservation_list_empty_title),
+            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier
+                .padding(top = 8.dp, start = 16.dp, end = 16.dp)
+        )
+        Text(
+            text = stringResource(id = R.string.reservation_list_empty_subtitle),
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier
+                .padding(top = 8.dp, start = 16.dp, end = 16.dp)
+        )
+
+        Button(
+            onClick = { onCallToAction() },
+            modifier = Modifier
+                .padding(8.dp)
+                .testTag(ReservationListViewTag.ReservationListViewEmptyAction.name)
+        ) {
+            Text(text = stringResource(id = R.string.reservation_list_empty_action).uppercase())
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ReservationListEmptyViewPreview() {
+    ReservationListEmptyView({})
 }
 
 //💡To be reused by the lazy column items
@@ -103,4 +171,6 @@ fun ReservationListErrorPreview() {
 enum class ReservationListViewTag {
     ReservationListViewLazyList,
     ReservationListItemView,
+    ReservationListViewEmpty,
+    ReservationListViewEmptyAction,
 }
