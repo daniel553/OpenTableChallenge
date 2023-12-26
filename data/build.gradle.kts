@@ -31,6 +31,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    packaging {
+        resources.excludes += "META-INF/LICENSE*"
+        resources.excludes += "META-INF/NOTICE.txt"
+    }
 }
 
 dependencies {
@@ -58,4 +63,8 @@ dependencies {
 
     //Coroutines
     androidTestImplementation(libs.kotlinx.coroutines.test)
+
+    //Mockk
+    androidTestImplementation(libs.mockk.android)
+
 }
