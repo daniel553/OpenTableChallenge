@@ -7,9 +7,9 @@ import com.opentable.domain.model.Reservation
  * 💡This is a scoped model used in views like "Compose reservation object"
  */
 data class ReservationItem(
-    val id: Long,
-    val name: String,
-    val time: Long, // Used to sort it
+    val id: Long = 0L,
+    val name: String = "",
+    val time: Long = 0L, // Used to sort it
     val timeString: String = "0:00 AM" // time formatted
 )
 

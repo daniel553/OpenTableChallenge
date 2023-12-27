@@ -1,8 +1,17 @@
 <resources>
     <string name="app_name">OpenTableChallenge</string>
 
+    //Nav titles
+    <string name="nav_reservation">Reservations</string>
+    <string name="nav_add_reservation">Add Reservation</string>
+
     //Reservations
     <string name="reservation_list_empty_title">No reservations here yet</string>
     <string name="reservation_list_empty_subtitle">Here you can see all your reservations</string>
     <string name="reservation_list_empty_action">Reserve now</string>
+
+    //Add reservation
+    <string name="add_form_name">Name</string>
+    <string name="add_form_time">Select time</string>
+    <string name="add_form_add_button">Save</string>
 </resources>
