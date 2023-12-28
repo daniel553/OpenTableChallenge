@@ -49,6 +49,7 @@ fun ReservationAddFormView(
             label = { Text(text = stringResource(id = R.string.add_form_name)) },
             onValueChange = { onUpdated(state.reservation.copy(name = it)) },
             maxLines = 1,
+            isError = state.errors.contains(ReservationAddFormError.NameRequired),
             modifier = Modifier
                 .constrainAs(nameRef) {
                     top.linkTo(parent.top, margin = 16.dp) //💡margins!
@@ -65,6 +66,7 @@ fun ReservationAddFormView(
             onSelected = { _, selection ->
                 onUpdated(state.reservation.copy(timeString = selection))
             },
+            isError = state.errors.contains(ReservationAddFormError.TimeRequired),
             modifier = Modifier.constrainAs(timeRef) {
                 top.linkTo(nameRef.bottom, margin = 8.dp)
                 start.linkTo(nameRef.start)
@@ -75,6 +77,7 @@ fun ReservationAddFormView(
 
         Button(
             onClick = { onSave() },
+            enabled = state.errors.isEmpty() && state.reservation.name.isNotBlank(),
             modifier = Modifier
                 .constrainAs(buttonRef) {
                     bottom.linkTo(parent.bottom)

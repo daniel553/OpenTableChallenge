@@ -9,4 +9,8 @@ sealed interface ScaffoldEvent {
     ) : ScaffoldEvent
 }
 
-data class AppScaffoldState(val showBack: Boolean = false, val title: String = "")
+data class AppScaffoldState(
+    val showBack: Boolean = false,
+    val title: String = "",
+    val snackBar: String? = ""
+)

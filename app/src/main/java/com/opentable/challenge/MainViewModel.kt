@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.opentable.challenge.ui.layout.AppScaffoldState
 import com.opentable.challenge.ui.layout.ScaffoldEvent
+import com.opentable.challenge.ui.nav.MainNavigationEvent
 import com.opentable.challenge.ui.nav.Router
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -36,6 +37,15 @@ class MainViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun onMainNavigationEvent(event: MainNavigationEvent) {
+        viewModelScope.launch {
+            when (event) {
+                is MainNavigationEvent.OnError -> _uiEvent.emit(MainUIEvent.OnShowSnackBar(event.message))
+            }
+        }
+    }
+
+
     private fun updateDestination(hasBackStack: Boolean, destination: String) {
         _uiState.update { state ->
             state.copy(
@@ -47,11 +57,16 @@ class MainViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun showSnackBar(message: String?) {
+        _uiState.update { state -> state.copy(scaffoldState = state.scaffoldState.copy(snackBar = message)) }
+    }
+
 }
 
 sealed interface MainUIEvent {
     data class OnNavPush(val destination: String) : MainUIEvent
     data object OnNavPop : MainUIEvent
+    data class OnShowSnackBar(val message: String?) : MainUIEvent
 }
 
 data class MainUIState(val scaffoldState: AppScaffoldState = AppScaffoldState())

@@ -23,7 +23,8 @@ fun OutlinedTextWithExposedDropdownMenu(
     label: @Composable () -> Unit,
     options: List<String>,
     onSelected: (Int, String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isError: Boolean = false,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selected by remember { mutableStateOf("") }
@@ -40,7 +41,8 @@ fun OutlinedTextWithExposedDropdownMenu(
             onValueChange = {},
             label = label,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+            //colors = ExposedDropdownMenuDefaults.textFieldColors(),
+            isError = isError
         )
         ExposedDropdownMenu(
             expanded = expanded,

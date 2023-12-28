@@ -1,5 +1,6 @@
 package com.opentable.challenge.model
 
+import com.opentable.challenge.util.toLocalDateTime
 import com.opentable.challenge.util.toMilliseconds
 import com.opentable.challenge.util.toTimeString
 import com.opentable.domain.model.Reservation
@@ -29,4 +30,10 @@ fun Reservation.toReservationItem(): ReservationItem = ReservationItem(
     name = this.name,
     time = this.time.toMilliseconds(),
     timeString = this.time.toTimeString()
+)
+
+fun ReservationItem.toReservation(): Reservation = Reservation(
+    id = this.id,
+    name = this.name,
+    time = this.timeString.toLocalDateTime()
 )

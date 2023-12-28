@@ -14,10 +14,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.opentable.challenge.reservation.ReservationListEvent
 import com.opentable.challenge.reservation.ReservationListScreen
 import com.opentable.challenge.reservation.ReservationListViewModel
+import com.opentable.challenge.reservation.add.ReservationAddEvent
 import com.opentable.challenge.reservation.add.ReservationAddScreen
 import com.opentable.challenge.reservation.add.ReservationAddViewModel
 import kotlinx.coroutines.flow.onEach
@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 // 💡Main navigation will hold the list of reservation and add list views
 @Composable
-fun MainNavigation(navController: NavHostController) {
+fun MainNavigation(navController: NavHostController, onEvent: (MainNavigationEvent) -> Unit) {
     NavHost(
         navController = navController,
         startDestination = Router.ReservationScreen.destination,
@@ -86,7 +86,28 @@ fun MainNavigation(navController: NavHostController) {
         ) {
             val viewmodel: ReservationAddViewModel = hiltViewModel()
             val state by viewmodel.uiState.collectAsStateWithLifecycle()
+            LaunchedEffect(viewmodel) {
+                viewmodel.uiEvent.onEach { event ->
+                    when (event) {
+                        is ReservationAddEvent.OnError -> launch {
+                            onEvent(
+                                MainNavigationEvent.OnError(event.message)
+                            )
+                        }
+
+                        ReservationAddEvent.OnReservationSaved -> launch {
+                            navController.popBackStack()
+                        }
+
+                        else -> {}
+                    }
+                }.stateIn(this)
+            }
             ReservationAddScreen(state = state, onEvent = viewmodel::onEvent)
         }
     }
+}
+
+sealed interface MainNavigationEvent {
+    data class OnError(val message: String?) : MainNavigationEvent
 }

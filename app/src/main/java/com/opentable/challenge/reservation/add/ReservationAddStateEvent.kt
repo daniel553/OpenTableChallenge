@@ -19,5 +19,9 @@ enum class ReservationAddFormError {
 //💡if needed, add event could be add or edit
 sealed interface ReservationAddEvent {
     data class OnUpdate(val reservation: ReservationItem) : ReservationAddEvent
+
     data object OnSave : ReservationAddEvent
+    data object OnReservationSaved : ReservationAddEvent
+
+    data class OnError(val message: String?) : ReservationAddEvent
 }

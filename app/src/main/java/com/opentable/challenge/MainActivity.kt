@@ -49,6 +49,7 @@ class MainActivity : ComponentActivity() {
                         when (event) {
                             MainUIEvent.OnNavPop -> navController.popBackStack()
                             is MainUIEvent.OnNavPush -> navController.navigateDisctinct(event.destination)
+                            is MainUIEvent.OnShowSnackBar -> viewModel.showSnackBar(event.message)
                         }
                     }.stateIn(this)
                 }
@@ -61,7 +62,7 @@ class MainActivity : ComponentActivity() {
                         state = state.scaffoldState,
                         scaffoldEvent = viewModel::onScaffoldEvent
                     ) {
-                        MainNavigation(navController)
+                        MainNavigation(navController, viewModel::onMainNavigationEvent)
                     }
                 }
             }
