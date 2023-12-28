@@ -20,7 +20,7 @@ class GetAvailability @Inject constructor(
 ) {
 
     private val startTimeDefault = 17
-    private val endTime = 23
+    private val endTime = 24
 
     /**
      * Get availability list
@@ -47,7 +47,7 @@ class GetAvailability @Inject constructor(
         val now = LocalDateTime.now().withSecond(0).withNano(0) //ie: 18:35:00
         val start = LocalDateTime.now().withHour(startTimeDefault).withMinute(0) //ie: 17:00:00
             .withSecond(0).withNano(0)
-        val end = LocalDateTime.now().withHour(endTime - 1).withMinute(0)//ie: 22:59:59.999999999
+        val end = LocalDateTime.now().withHour(endTime - 1).withMinute(59)//ie: 22:59:59.999999999
             .withSecond(59).withNano(999999999)
 
         if (now.isAfter(end)) return dayTimes //Just return an empty string

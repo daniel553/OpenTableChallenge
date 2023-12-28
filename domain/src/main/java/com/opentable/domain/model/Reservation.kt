@@ -2,6 +2,7 @@ package com.opentable.domain.model
 
 import com.opentable.data.reservation.repo.db.ReservationEntity
 import com.opentable.domain.util.toLocalDateTime
+import com.opentable.domain.util.toTimeString
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDateTime
@@ -23,4 +24,9 @@ fun ReservationEntity.toReservation(): Reservation = Reservation(
     id = this.id,
     name = this.name,
     time = this.time.toLocalDateTime()
+)
+
+fun Reservation.toReservationEntity(): ReservationEntity = ReservationEntity(
+    name = this.name,
+    time = this.time.toString()
 )
