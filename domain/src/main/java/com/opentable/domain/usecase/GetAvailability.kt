@@ -20,7 +20,7 @@ class GetAvailability @Inject constructor(
 ) {
 
     private val startTimeDefault = 17
-    private val endTime = 24
+    private val endTime = 23
 
     /**
      * Get availability list
