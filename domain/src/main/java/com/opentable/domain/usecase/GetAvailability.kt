@@ -32,6 +32,7 @@ class GetAvailability @Inject constructor(
      * @return a triple of LocalDateTime, String and Boolean
      */
     suspend operator fun invoke(
+        nowP: LocalDateTime = LocalDateTime.now(),
         startTimeP: Int = 17,
         endTimeP: Int = 23,
         offsetP: Int = 1
@@ -43,7 +44,7 @@ class GetAvailability @Inject constructor(
             }.await().toReservationList()
 
             // Create today's availability
-            createLocalDayTimes(reservationTimes, startTimeP, endTimeP, offsetP).toList()
+            createLocalDayTimes(reservationTimes, nowP, startTimeP, endTimeP, offsetP).toList()
         }
     }
 
@@ -52,13 +53,14 @@ class GetAvailability @Inject constructor(
      */
     private fun createLocalDayTimes(
         reservationTimes: List<Reservation>,
+        nowP: LocalDateTime,
         startTimeP: Int,
         endTimeP: Int,
         offsetP: Int
     ): List<Triple<LocalDateTime, String, Boolean>> {
         val dayTimes = mutableListOf<Triple<LocalDateTime, String, Boolean>>()
 
-        val now = LocalDateTime.now().withSecond(0).withNano(0) //ie: 18:35:00
+        val now = nowP.withSecond(0).withNano(0) //ie: 18:35:00
         val start = LocalDateTime.now().withHour(startTimeP).withMinute(0) //ie: 17:00:00
             .withSecond(0).withNano(0)
         var end = LocalDateTime.now().withHour(endTimeP - 1).withMinute(59)//ie: 22:59:59.999999999
