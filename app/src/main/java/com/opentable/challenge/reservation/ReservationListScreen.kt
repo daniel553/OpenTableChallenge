@@ -26,6 +26,7 @@ fun ReservationListScreen(
     onEvent: (ReservationListEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    //💡Depending on state a state screen will be shown
     Column(modifier = modifier.fillMaxWidth()) {
         when (state) {
             ReservationListState.Error -> ReservationListError(
@@ -39,12 +40,14 @@ fun ReservationListScreen(
             is ReservationListState.Success -> ReservationListView(
                 state.list,
                 onSelect = { onEvent(ReservationListEvent.onSelected(it)) },
+                onAdd = { onEvent(ReservationListEvent.onAdd) },
                 modifier = Modifier.testTag(ReservationListScreenViewTag.ReservationListView.name)
             )
         }
     }
 }
 
+//💡Used as part of ui tests for compose
 enum class ReservationListScreenViewTag {
     ReservationListError,
     ReservationListShrimmer,

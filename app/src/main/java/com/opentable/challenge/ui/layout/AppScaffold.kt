@@ -1,5 +1,6 @@
 package com.opentable.challenge.ui.layout
 
+import androidx.annotation.IdRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -12,12 +13,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.opentable.challenge.R
+import com.opentable.challenge.ui.nav.Router
 
 /**
  * 💡Scaffold event is used to emit events when topbar or FAB are invoked, and
@@ -25,8 +34,20 @@ import androidx.compose.ui.unit.dp
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppScaffold(scaffoldEvent: (ScaffoldEvent) -> Unit, body: @Composable () -> Unit) {
+fun AppScaffold(
+    state: AppScaffoldState,
+    scaffoldEvent: (ScaffoldEvent) -> Unit,
+    body: @Composable () -> Unit
+) {
+    val snackBarHostState = remember { SnackbarHostState() }
+    LaunchedEffect(state.snackBar) {
+        if (!state.snackBar.isNullOrEmpty()) {
+            snackBarHostState.showSnackbar(state.snackBar)
+        }
+    }
+
     Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
         topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -34,22 +55,26 @@ fun AppScaffold(scaffoldEvent: (ScaffoldEvent) -> Unit, body: @Composable () -> 
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
-                    Text("Title")
+                    Text(stringResource(id = state.title.asResourceId()))
                 },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        scaffoldEvent(ScaffoldEvent.BackPressed)
-                    }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    if (state.showBack) {
+                        IconButton(onClick = {
+                            scaffoldEvent(ScaffoldEvent.BackPressed)
+                        }) {
+                            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        }
                     }
                 }
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                scaffoldEvent(ScaffoldEvent.AddPressed)
-            }) {
-                Icon(Icons.Default.Add, contentDescription = "Add")
+            if (!state.showBack) {
+                FloatingActionButton(onClick = {
+                    scaffoldEvent(ScaffoldEvent.AddPressed)
+                }) {
+                    Icon(Icons.Default.Add, contentDescription = "Add")
+                }
             }
         }
     ) { innerPadding ->
@@ -59,4 +84,10 @@ fun AppScaffold(scaffoldEvent: (ScaffoldEvent) -> Unit, body: @Composable () -> 
             content = { body() }
         )
     }
+}
+
+private fun String.asResourceId(): Int = when (this) {
+    Router.ReservationScreen.destination -> R.string.nav_reservation
+    Router.AddReservationScreen.destination -> R.string.nav_add_reservation
+    else -> R.string.app_name
 }

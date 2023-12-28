@@ -52,8 +52,15 @@ class ReservationListViewModel @Inject constructor(
         }
     }
 
+    /**
+     *  💡We're handling the upcoming event by launching a new event,
+     *  if simple we may just launch it and it should be handled in
+     *  a rememberable coroutine scope, launched or disposable effect.
+     */
     fun onEvent(event: ReservationListEvent) {
-        TODO("Handle event")
+        viewModelScope.launch {
+            _uiEvent.emit(event)
+        }
     }
 
 }

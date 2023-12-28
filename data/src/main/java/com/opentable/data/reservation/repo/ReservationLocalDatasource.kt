@@ -12,6 +12,7 @@ interface IReservationLocalDatasource {
     suspend fun insert(reservation: ReservationEntity): Long
     suspend fun getById(id: Long): ReservationEntity
     suspend fun delete(reservation: ReservationEntity)
+    suspend fun getByDate(date: String): List<ReservationEntity>
 }
 
 /**
@@ -33,5 +34,6 @@ class ReservationLocalDatasource @Inject constructor(
     override suspend fun getById(id: Long): ReservationEntity = dao.getById(id)
 
     override suspend fun delete(reservation: ReservationEntity) = dao.delete(reservation)
+    override suspend fun getByDate(date: String): List<ReservationEntity> = dao.getByDate("%$date%")
 }
 

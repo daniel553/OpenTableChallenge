@@ -7,4 +7,5 @@ package com.opentable.challenge.ui.nav
 sealed class Router(val destination: String) {
 
     data object ReservationScreen: Router("ReservationScreen")
+    data object AddReservationScreen: Router("AddReservationScreen")
 }
