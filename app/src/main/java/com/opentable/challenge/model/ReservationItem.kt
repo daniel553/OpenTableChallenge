@@ -1,5 +1,6 @@
 package com.opentable.challenge.model
 
+import com.opentable.challenge.util.toMilliseconds
 import com.opentable.challenge.util.toTimeString
 import com.opentable.domain.model.Reservation
 
@@ -26,6 +27,6 @@ fun List<Reservation>.toListReservationItem(): List<ReservationItem> = this.map 
 fun Reservation.toReservationItem(): ReservationItem = ReservationItem(
     id = this.id,
     name = this.name,
-    time = this.time,
+    time = this.time.toMilliseconds(),
     timeString = this.time.toTimeString()
 )

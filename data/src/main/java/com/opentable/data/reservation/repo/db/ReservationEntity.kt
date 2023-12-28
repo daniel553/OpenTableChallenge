@@ -12,5 +12,5 @@ data class ReservationEntity(
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "reservation_time")
-    val time: Long,
+    val time: String,
 )
