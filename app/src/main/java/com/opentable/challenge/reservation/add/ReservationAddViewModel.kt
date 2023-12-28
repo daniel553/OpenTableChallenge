@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.opentable.challenge.model.ReservationItem
 import com.opentable.challenge.model.toReservation
-import com.opentable.challenge.util.toTimeString
+import com.opentable.challenge.ui.component.DropdownMenuItem
 import com.opentable.domain.usecase.GetAvailability
 import com.opentable.domain.usecase.SaveReservation
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,7 +35,7 @@ class ReservationAddViewModel @Inject constructor(
     private val _uiEvent = MutableSharedFlow<ReservationAddEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
 
-    private var availability = mutableListOf<Pair<LocalDateTime, String>>()
+    private var availability = mutableListOf<Triple<LocalDateTime, String, Boolean>>()
 
     init {
         initAvailability()
@@ -54,8 +54,12 @@ class ReservationAddViewModel @Inject constructor(
             availability.clear()
             availability.addAll(getAvailability())
             _uiState.update { state ->
-                state.copy(timeOptions = availability.map { (_, formatted) ->
-                    formatted
+                state.copy(timeOptions = availability.map { (key, text, enabled) ->
+                    DropdownMenuItem(
+                        key.toString(),
+                        text,
+                        !enabled
+                    )
                 })
             }
         }

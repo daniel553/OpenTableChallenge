@@ -1,13 +1,14 @@
 package com.opentable.challenge.reservation.add
 
 import com.opentable.challenge.model.ReservationItem
+import com.opentable.challenge.ui.component.DropdownMenuItem
 
 //💡Form may need extra attributes, the reservation could hold some data (at least required)
 data class ReservationAddFormState(
     val reservation: ReservationItem = ReservationItem(),
     val loading: Boolean = false,
     val errors: Set<ReservationAddFormError> = emptySet(),
-    val timeOptions: List<String> = emptyList()
+    val timeOptions: List<DropdownMenuItem> = emptyList()
 )
 
 enum class ReservationAddFormError {

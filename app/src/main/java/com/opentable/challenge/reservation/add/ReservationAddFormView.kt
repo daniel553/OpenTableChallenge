@@ -15,6 +15,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.opentable.challenge.R
 import com.opentable.challenge.model.ReservationItem
+import com.opentable.challenge.ui.component.DropdownMenuItem
 import com.opentable.challenge.ui.component.OutlinedTextWithExposedDropdownMenu
 import com.opentable.challenge.ui.theme.OpenTableChallengeTheme
 
@@ -23,7 +24,7 @@ import com.opentable.challenge.ui.theme.OpenTableChallengeTheme
 fun ReservationAddFormViewPreview() {
     val state = ReservationAddFormState(
         ReservationItem(1L, "Name", 0L, timeString = "0:00 AM"),
-        timeOptions = listOf("0:00 AM", "0:15 AM", "0:30 AM")
+        timeOptions = listOf(DropdownMenuItem("KEY", "TEXT"))
     )
     OpenTableChallengeTheme {
         ReservationAddFormView(state, {}, {}, modifier = Modifier.fillMaxSize())
@@ -40,6 +41,8 @@ fun ReservationAddFormView(
     //💡Let's use the constrain layout such as xml but in compose way,
     // but it actually this can be a regular column as long as this is quite simple view.
     // -> constraintLayout-compose artifact has a different versioning than Jetpack Compose.
+    val notAvailable = stringResource(id = R.string.not_available)
+
     ConstraintLayout(modifier = modifier) {
         //💡Not sure how the reference naming conventions
         val (nameRef, timeRef, buttonRef) = createRefs()
@@ -63,10 +66,13 @@ fun ReservationAddFormView(
         OutlinedTextWithExposedDropdownMenu(
             label = { Text(text = stringResource(id = R.string.add_form_time)) },
             options = state.timeOptions,
-            onSelected = { _, selection ->
-                onUpdated(state.reservation.copy(timeString = selection))
+            onSelected = { selection ->
+                onUpdated(state.reservation.copy(timeString = selection.text))
             },
             isError = state.errors.contains(ReservationAddFormError.TimeRequired),
+            optionDecoration = { item ->
+                item?.text?.plus(if (item.enabled) "" else notAvailable) ?: ""
+            },
             modifier = Modifier.constrainAs(timeRef) {
                 top.linkTo(nameRef.bottom, margin = 8.dp)
                 start.linkTo(nameRef.start)

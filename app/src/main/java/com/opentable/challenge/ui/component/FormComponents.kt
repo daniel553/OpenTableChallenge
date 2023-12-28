@@ -21,13 +21,15 @@ import com.opentable.challenge.ui.theme.OpenTableChallengeTheme
 @Composable
 fun OutlinedTextWithExposedDropdownMenu(
     label: @Composable () -> Unit,
-    options: List<String>,
-    onSelected: (Int, String) -> Unit,
+    options: List<DropdownMenuItem>,
+    onSelected: (DropdownMenuItem) -> Unit,
     modifier: Modifier = Modifier,
     isError: Boolean = false,
+    expandedDefault: Boolean = false,
+    optionDecoration: (DropdownMenuItem?) -> String = { option -> option?.text.orEmpty() },
 ) {
-    var expanded by remember { mutableStateOf(false) }
-    var selected by remember { mutableStateOf("") }
+    var expanded by remember { mutableStateOf(expandedDefault) }
+    var selected by remember { mutableStateOf<DropdownMenuItem?>(null) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -37,7 +39,7 @@ fun OutlinedTextWithExposedDropdownMenu(
         TextField(
             modifier = Modifier.menuAnchor(),
             readOnly = true,
-            value = selected,
+            value = optionDecoration(selected),
             onValueChange = {},
             label = label,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
@@ -48,14 +50,15 @@ fun OutlinedTextWithExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
         ) {
-            options.forEachIndexed { index, selectionOption ->
+            options.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(selectionOption) },
+                    text = { Text(optionDecoration(option)) },
                     onClick = {
-                        selected = selectionOption
+                        selected = option
                         expanded = false
-                        onSelected(index, selectionOption)
+                        onSelected(option)
                     },
+                    enabled = option.enabled,
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                 )
             }
@@ -69,9 +72,11 @@ fun OutlinedTextWithExposedDropdownMenuPreview() {
     OpenTableChallengeTheme {
         OutlinedTextWithExposedDropdownMenu(
             label = { Text(text = "Label") },
-            options = listOf("A", "B", "C"),
-            onSelected = { _, _ -> },
-            modifier = Modifier.width(100.dp)
+            options = listOf(DropdownMenuItem("A", "")),
+            onSelected = {},
+            modifier = Modifier.width(200.dp)
         )
     }
 }
+
+data class DropdownMenuItem(val key: String, val text: String, val enabled: Boolean = true)
