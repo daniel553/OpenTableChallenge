@@ -26,4 +26,7 @@ interface ReservationDao {
     @Delete
     suspend fun delete(reservation: ReservationEntity)
 
+    @Query("SELECT * FROM Reservation WHERE reservation_time like :date")
+    suspend fun getByDate(date: String): List<ReservationEntity>
+
 }

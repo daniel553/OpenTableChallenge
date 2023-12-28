@@ -15,6 +15,8 @@ interface IReservationRepository {
     suspend fun insertToDb(reservation: ReservationEntity): Long
     suspend fun getById(id: Long): ReservationEntity
     suspend fun deleteFromDb(reservation: ReservationEntity)
+    suspend fun getReservationsByDate(date: String): List<ReservationEntity>
+
     //💡Then register other actions like Fetch (from api) then Save (to db) a new entity
 }
 
@@ -31,6 +33,9 @@ class ReservationRepository @Inject constructor(
     override suspend fun getById(id: Long): ReservationEntity = local.getById(id)
 
     override suspend fun deleteFromDb(reservation: ReservationEntity) = local.delete(reservation)
+    override suspend fun getReservationsByDate(date: String): List<ReservationEntity> {
+        return local.getByDate(date)
+    }
 
     /**
      * 💡If long running task are required we may indicate the dispatcher ie: IO.
