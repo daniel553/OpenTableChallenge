@@ -61,9 +61,9 @@ class GetAvailability @Inject constructor(
         val dayTimes = mutableListOf<Triple<LocalDateTime, String, Boolean>>()
 
         val now = nowP.withSecond(0).withNano(0) //ie: 18:35:00
-        val start = LocalDateTime.now().withHour(startTimeP).withMinute(0) //ie: 17:00:00
+        val start = nowP.withHour(startTimeP).withMinute(0) //ie: 17:00:00
             .withSecond(0).withNano(0)
-        var end = LocalDateTime.now().withHour(endTimeP - 1).withMinute(59)//ie: 22:59:59.999999999
+        var end = nowP.withHour(endTimeP - 1).withMinute(59)//ie: 22:59:59.999999999
             .withSecond(59).withNano(999999999)
 
         if (now.isAfter(end)) return dayTimes //Just return an empty string

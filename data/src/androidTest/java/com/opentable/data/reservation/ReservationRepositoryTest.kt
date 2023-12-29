@@ -44,7 +44,7 @@ class ReservationRepositoryTest {
     //💡The intention is to verify an internal call was performed (local datasource) insertion
     @Test
     fun givenReservation_whenRepositoryInsertsToDb_thenCallsLocalDatasourceInsert() = runTest {
-        val reservation = ReservationEntity(name = "name", time = System.currentTimeMillis())
+        val reservation = ReservationEntity(name = "name", time = "Time")
 
         repository.insertToDb(reservation)
 
@@ -54,7 +54,7 @@ class ReservationRepositoryTest {
     @Test
     fun givenReservationStored_whenGetReservation_thenCallsLocalDatasourceGetById() = runTest {
         val id = 1L
-        val reservation = ReservationEntity(id, name = "name", time = System.currentTimeMillis())
+        val reservation = ReservationEntity(id, name = "name", time = "Time")
 
         //Given a mock reservation object
         coEvery { localDatasource.getById(id) } returns reservation
