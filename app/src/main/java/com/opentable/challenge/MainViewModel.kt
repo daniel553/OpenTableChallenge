@@ -33,6 +33,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
                     event.hasBackStack,
                     event.destination
                 )
+                ScaffoldEvent.OnSnackBarShown -> showSnackBar(null)
             }
         }
     }

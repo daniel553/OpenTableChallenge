@@ -42,6 +42,7 @@ fun AppScaffold(
     LaunchedEffect(state.snackBar) {
         if (!state.snackBar.isNullOrEmpty()) {
             snackBarHostState.showSnackbar(state.snackBar)
+            scaffoldEvent(ScaffoldEvent.OnSnackBarShown)
         }
     }
 
