@@ -138,21 +138,21 @@ fun ReservationListItemView(
 ) {
     Column(
         modifier = modifier
-            .padding(4.dp)
+            .padding(8.dp)
             .shadow(elevation = 4.dp, clip = false, shape = RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
-            .background(color = MaterialTheme.colorScheme.primaryContainer)
-            .padding(8.dp)
+            .background(color = MaterialTheme.colorScheme.surface)
             .testTag(ReservationListViewTag.ReservationListItemView.name.plus(reservation.id))
             .clickable { onClick() }) {
         Text(
             text = reservation.name.uppercase(),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
         )
         Text(
             text = reservation.timeString,
             style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(top = 2.dp)
+            modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
         )
     }
 }

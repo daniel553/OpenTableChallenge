@@ -1,6 +1,6 @@
 package com.opentable.challenge.ui.layout
 
-import androidx.annotation.IdRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -21,7 +21,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -58,7 +57,7 @@ fun AppScaffold(
                     Text(stringResource(id = state.title.asResourceId()))
                 },
                 navigationIcon = {
-                    if (state.showBack) {
+                    AnimatedVisibility(state.showBack) {
                         IconButton(onClick = {
                             scaffoldEvent(ScaffoldEvent.BackPressed)
                         }) {
@@ -69,7 +68,7 @@ fun AppScaffold(
             )
         },
         floatingActionButton = {
-            if (!state.showBack) {
+            AnimatedVisibility(!state.showBack) {
                 FloatingActionButton(onClick = {
                     scaffoldEvent(ScaffoldEvent.AddPressed)
                 }) {
