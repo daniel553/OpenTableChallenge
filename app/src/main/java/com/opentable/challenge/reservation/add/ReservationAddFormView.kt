@@ -30,6 +30,8 @@ import com.opentable.challenge.model.ReservationItem
 import com.opentable.challenge.ui.component.DropdownMenuItem
 import com.opentable.challenge.ui.component.OutlinedTextWithExposedDropdownMenu
 import com.opentable.challenge.ui.theme.OpenTableChallengeTheme
+import com.opentable.challenge.util.toLocalDateTime
+import com.opentable.challenge.util.toMilliseconds
 
 @Preview(showBackground = true, heightDp = 400)
 @Composable
@@ -81,7 +83,12 @@ fun ReservationAddFormView(
             label = { Text(text = stringResource(id = R.string.add_form_time)) },
             options = state.timeOptions,
             onSelected = { selection ->
-                onUpdated(state.reservation.copy(timeString = selection.text))
+                onUpdated(
+                    state.reservation.copy(
+                        timeString = selection.text,
+                        time = selection.key.toLocalDateTime().toMilliseconds()
+                    )
+                )
             },
             isError = state.errors.contains(ReservationAddFormError.TimeRequired),
             optionDecoration = { item ->

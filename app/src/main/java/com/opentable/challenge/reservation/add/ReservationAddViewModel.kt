@@ -89,7 +89,7 @@ class ReservationAddViewModel @Inject constructor(
         if (reservationItem.name.isEmpty()) {
             set.add(ReservationAddFormError.NameRequired)
         }
-        if (reservationItem.timeString.isEmpty()) {
+        if (reservationItem.time == 0L) {
             set.add(ReservationAddFormError.TimeRequired)
         }
 
