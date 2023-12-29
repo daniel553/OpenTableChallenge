@@ -8,7 +8,9 @@ data class ReservationAddFormState(
     val reservation: ReservationItem = ReservationItem(),
     val loading: Boolean = false,
     val errors: Set<ReservationAddFormError> = emptySet(),
-    val timeOptions: List<DropdownMenuItem> = emptyList()
+    val timeOptions: List<DropdownMenuItem> = emptyList(),
+    val errorSave: Boolean = false,
+    val noMoreTimes: Boolean = false,
 )
 
 enum class ReservationAddFormError {
@@ -20,9 +22,8 @@ enum class ReservationAddFormError {
 //💡if needed, add event could be add or edit
 sealed interface ReservationAddEvent {
     data class OnUpdate(val reservation: ReservationItem) : ReservationAddEvent
-
     data object OnSave : ReservationAddEvent
     data object OnReservationSaved : ReservationAddEvent
-
     data class OnError(val message: String?) : ReservationAddEvent
+    data object OnBack : ReservationAddEvent
 }

@@ -44,7 +44,7 @@ internal class ReservationDaoTest {
 
     @Test
     fun writeReservation_thenIdReservationIsReturned() = runTest {
-        val reservation = ReservationEntity(name = "Test1", time = System.currentTimeMillis())
+        val reservation = ReservationEntity(name = "Test1", time = "Time")
 
         val result = subject.insert(reservation)
 
@@ -53,7 +53,7 @@ internal class ReservationDaoTest {
 
     @Test
     fun writeReservation_thenReadReservationEntity() = runTest {
-        val reservation = ReservationEntity(name = "Test1", time = System.currentTimeMillis())
+        val reservation = ReservationEntity(name = "Test1", time = "Time")
 
         val id = subject.insert(reservation)
 

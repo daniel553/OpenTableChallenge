@@ -33,7 +33,8 @@ fun ReservationAddScreen(
     ReservationAddFormView(
         state,
         onUpdated = { onEvent(ReservationAddEvent.OnUpdate(it)) },
-        onSave = { onEvent(ReservationAddEvent.OnSave)},
+        onSave = { onEvent(ReservationAddEvent.OnSave) },
+        onBack = { onEvent(ReservationAddEvent.OnBack) },
         modifier = modifier
             .fillMaxSize()
             .testTag(ReservationAddScreenViewTag.ReservationAddForm.name)

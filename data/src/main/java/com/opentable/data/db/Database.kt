@@ -8,7 +8,7 @@ import com.opentable.data.reservation.repo.db.ReservationEntity
 /**
  * 💡Single database to work offline
  */
-@Database(entities = [ReservationEntity::class], version = 1)
+@Database(entities = [ReservationEntity::class], version = 2)
 abstract class Database : RoomDatabase() {
     companion object {
         const val name = "opentable-challenge.db"

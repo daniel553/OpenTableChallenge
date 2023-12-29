@@ -2,10 +2,12 @@ package com.opentable.challenge.reservation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.opentable.challenge.model.reservationItemPreviewMock
 import com.opentable.challenge.ui.theme.OpenTableChallengeTheme
 
@@ -27,7 +29,11 @@ fun ReservationListScreen(
     modifier: Modifier = Modifier
 ) {
     //💡Depending on state a state screen will be shown
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(
+        modifier = modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+    ) {
         when (state) {
             ReservationListState.Error -> ReservationListError(
                 modifier.testTag(ReservationListScreenViewTag.ReservationListError.name)

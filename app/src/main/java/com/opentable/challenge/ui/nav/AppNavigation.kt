@@ -95,6 +95,7 @@ fun MainNavigation(navController: NavHostController, onEvent: (MainNavigationEve
                             )
                         }
 
+                        ReservationAddEvent.OnBack,
                         ReservationAddEvent.OnReservationSaved -> launch {
                             navController.popBackStack()
                         }

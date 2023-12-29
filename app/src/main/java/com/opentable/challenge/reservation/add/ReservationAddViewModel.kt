@@ -45,24 +45,35 @@ class ReservationAddViewModel @Inject constructor(
         when (event) {
             ReservationAddEvent.OnSave -> saveForm()
             is ReservationAddEvent.OnUpdate -> updateForm(event.reservation)
+            is ReservationAddEvent.OnBack -> goBack()
             else -> {}
         }
     }
 
     private fun initAvailability() {
         viewModelScope.launch {
+            showLoading(true)
             availability.clear()
             availability.addAll(getAvailability())
             _uiState.update { state ->
-                state.copy(timeOptions = availability.map { (key, text, enabled) ->
-                    DropdownMenuItem(
-                        key.toString(),
-                        text,
-                        !enabled
-                    )
-                })
+                state.copy(
+                    timeOptions = availability.map { (key, text, enabled) ->
+                        DropdownMenuItem(
+                            key.toString(),
+                            text,
+                            !enabled
+                        )
+                    },
+                    noMoreTimes = noAvailability()
+                )
             }
+            showLoading(false)
         }
+    }
+
+    // 💡Shows progress indicator
+    private fun showLoading(loading: Boolean) {
+        _uiState.update { state -> state.copy(loading = loading) }
     }
 
     // 💡Check errors in form and enable saving button
@@ -70,10 +81,10 @@ class ReservationAddViewModel @Inject constructor(
         _uiState.update { state ->
             state.copy(
                 reservation = reservationItem,
-                errors = formErrors(reservationItem)
+                errors = formErrors(reservationItem),
+                errorSave = false
             )
         }
-
     }
 
     private fun formErrors(reservationItem: ReservationItem): Set<ReservationAddFormError> {
@@ -82,7 +93,7 @@ class ReservationAddViewModel @Inject constructor(
         if (reservationItem.name.isEmpty()) {
             set.add(ReservationAddFormError.NameRequired)
         }
-        if (reservationItem.timeString.isEmpty()) {
+        if (reservationItem.time == 0L) {
             set.add(ReservationAddFormError.TimeRequired)
         }
 
@@ -90,6 +101,8 @@ class ReservationAddViewModel @Inject constructor(
     }
 
     private fun saveForm() {
+        showLoading(true)
+        setSaveError(false)
         with(uiState.value) {
             if (errors.isEmpty()) {
                 viewModelScope.launch {
@@ -100,20 +113,36 @@ class ReservationAddViewModel @Inject constructor(
                         val result = saveReservation(reservationToSave.toReservation())
                         if (result > 0) {
                             //Saved correctly
-                            showError("Saved!")
+                            showError("Saved!") // 💡Don't do this, it hast to be a reference of localized string
                             _uiEvent.emit(ReservationAddEvent.OnReservationSaved)
                         } else {
                             //Error saving
                             showError("Error saving reservation")
+                            setSaveError(true)
                         }
                     } catch (exception: IOException) {
                         showError(exception.message)
+                        setSaveError(true)
+                    } finally {
+                        showLoading(false)
                     }
                 }
             } else {
                 showError("Form has errors")
+                showLoading(false)
+                setSaveError(true)
             }
         }
+    }
+
+    private fun goBack() {
+        viewModelScope.launch {
+            _uiEvent.emit(ReservationAddEvent.OnBack)
+        }
+    }
+
+    private fun setSaveError(errorSave: Boolean) {
+        _uiState.update { state -> state.copy(errorSave = errorSave) }
     }
 
     private fun getAvailabilityTimeString(timeString: String): String {
@@ -126,5 +155,9 @@ class ReservationAddViewModel @Inject constructor(
             _uiEvent.emit(ReservationAddEvent.OnError(message))
         }
     }
+
+    // 💡warns about availability for a reservation as a Chip
+    private fun noAvailability(): Boolean =
+        availability.isEmpty() || availability.find { !it.third } == null
 
 }
