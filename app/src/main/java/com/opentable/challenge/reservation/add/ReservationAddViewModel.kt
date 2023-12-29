@@ -45,6 +45,7 @@ class ReservationAddViewModel @Inject constructor(
         when (event) {
             ReservationAddEvent.OnSave -> saveForm()
             is ReservationAddEvent.OnUpdate -> updateForm(event.reservation)
+            is ReservationAddEvent.OnBack -> goBack()
             else -> {}
         }
     }
@@ -53,15 +54,18 @@ class ReservationAddViewModel @Inject constructor(
         viewModelScope.launch {
             showLoading(true)
             availability.clear()
-            availability.addAll(getAvailability(endTimeP = 24))
+            availability.addAll(getAvailability())
             _uiState.update { state ->
-                state.copy(timeOptions = availability.map { (key, text, enabled) ->
-                    DropdownMenuItem(
-                        key.toString(),
-                        text,
-                        !enabled
-                    )
-                })
+                state.copy(
+                    timeOptions = availability.map { (key, text, enabled) ->
+                        DropdownMenuItem(
+                            key.toString(),
+                            text,
+                            !enabled
+                        )
+                    },
+                    noMoreTimes = noAvailability()
+                )
             }
             showLoading(false)
         }
@@ -131,6 +135,12 @@ class ReservationAddViewModel @Inject constructor(
         }
     }
 
+    private fun goBack() {
+        viewModelScope.launch {
+            _uiEvent.emit(ReservationAddEvent.OnBack)
+        }
+    }
+
     private fun setSaveError(errorSave: Boolean) {
         _uiState.update { state -> state.copy(errorSave = errorSave) }
     }
@@ -145,5 +155,9 @@ class ReservationAddViewModel @Inject constructor(
             _uiEvent.emit(ReservationAddEvent.OnError(message))
         }
     }
+
+    // 💡warns about availability for a reservation as a Chip
+    private fun noAvailability(): Boolean =
+        availability.isEmpty() || availability.find { !it.third } == null
 
 }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
@@ -40,10 +41,23 @@ fun ReservationAddFormViewPreview() {
         ReservationItem(1L, "Name", 0L, timeString = "0:00 AM"),
         timeOptions = listOf(DropdownMenuItem("KEY", "TEXT")),
         loading = true,
-        errorSave = true
+        errorSave = true,
     )
     OpenTableChallengeTheme {
-        ReservationAddFormView(state, {}, {}, modifier = Modifier.fillMaxSize())
+        ReservationAddFormView(state, {}, {}, {}, modifier = Modifier.fillMaxSize())
+    }
+}
+
+@Preview(showBackground = true, heightDp = 400)
+@Composable
+fun ReservationAddFormViewNoMoreTimesPreview() {
+    val state = ReservationAddFormState(
+        ReservationItem(1L, "Name", 0L, timeString = "0:00 AM"),
+        timeOptions = listOf(DropdownMenuItem("KEY", "TEXT")),
+        noMoreTimes = true,
+    )
+    OpenTableChallengeTheme {
+        ReservationAddFormView(state, {}, {}, {}, modifier = Modifier.fillMaxSize())
     }
 }
 
@@ -52,6 +66,7 @@ fun ReservationAddFormView(
     state: ReservationAddFormState,
     onUpdated: (reservation: ReservationItem) -> Unit,
     onSave: () -> Unit,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     //💡Let's use the constrain layout such as xml but in compose way,
@@ -125,6 +140,23 @@ fun ReservationAddFormView(
                         )
                     },
                     enabled = state.errors.isEmpty() && state.reservation.name.isNotBlank()
+                )
+            }
+
+            AnimatedVisibility(state.noMoreTimes && !state.loading) {
+                AssistChip(
+                    onClick = { onBack() },
+                    label = {
+                        Text(text = stringResource(id = R.string.add_error_no_more_reservation_times))
+                    },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.DateRange,
+                            contentDescription = "Localized description",
+                            modifier = Modifier.size(AssistChipDefaults.IconSize),
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                    }
                 )
             }
 

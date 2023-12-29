@@ -18,4 +18,5 @@
     <string name="add_form_add_button">Save</string>
     <string name="not_available"> - Not Available</string>
     <string name="add_error_save">Reservation was not saved, try again!</string>
+    <string name="add_error_no_more_reservation_times">No more space today, try tomorrow!</string>
 </resources>
