@@ -17,4 +17,5 @@
     <string name="add_form_time">Select time</string>
     <string name="add_form_add_button">Save</string>
     <string name="not_available"> - Not Available</string>
+    <string name="add_error_save">Reservation was not saved, try again!</string>
 </resources>

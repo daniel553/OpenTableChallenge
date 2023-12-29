@@ -51,8 +51,9 @@ class ReservationAddViewModel @Inject constructor(
 
     private fun initAvailability() {
         viewModelScope.launch {
+            showLoading(true)
             availability.clear()
-            availability.addAll(getAvailability())
+            availability.addAll(getAvailability(endTimeP = 24))
             _uiState.update { state ->
                 state.copy(timeOptions = availability.map { (key, text, enabled) ->
                     DropdownMenuItem(
@@ -62,7 +63,13 @@ class ReservationAddViewModel @Inject constructor(
                     )
                 })
             }
+            showLoading(false)
         }
+    }
+
+    // 💡Shows progress indicator
+    private fun showLoading(loading: Boolean) {
+        _uiState.update { state -> state.copy(loading = loading) }
     }
 
     // 💡Check errors in form and enable saving button
@@ -70,10 +77,10 @@ class ReservationAddViewModel @Inject constructor(
         _uiState.update { state ->
             state.copy(
                 reservation = reservationItem,
-                errors = formErrors(reservationItem)
+                errors = formErrors(reservationItem),
+                errorSave = false
             )
         }
-
     }
 
     private fun formErrors(reservationItem: ReservationItem): Set<ReservationAddFormError> {
@@ -90,6 +97,8 @@ class ReservationAddViewModel @Inject constructor(
     }
 
     private fun saveForm() {
+        showLoading(true)
+        setSaveError(false)
         with(uiState.value) {
             if (errors.isEmpty()) {
                 viewModelScope.launch {
@@ -100,20 +109,30 @@ class ReservationAddViewModel @Inject constructor(
                         val result = saveReservation(reservationToSave.toReservation())
                         if (result > 0) {
                             //Saved correctly
-                            showError("Saved!")
+                            showError("Saved!") // 💡Don't do this, it hast to be a reference of localized string
                             _uiEvent.emit(ReservationAddEvent.OnReservationSaved)
                         } else {
                             //Error saving
                             showError("Error saving reservation")
+                            setSaveError(true)
                         }
                     } catch (exception: IOException) {
                         showError(exception.message)
+                        setSaveError(true)
+                    } finally {
+                        showLoading(false)
                     }
                 }
             } else {
                 showError("Form has errors")
+                showLoading(false)
+                setSaveError(true)
             }
         }
+    }
+
+    private fun setSaveError(errorSave: Boolean) {
+        _uiState.update { state -> state.copy(errorSave = errorSave) }
     }
 
     private fun getAvailabilityTimeString(timeString: String): String {

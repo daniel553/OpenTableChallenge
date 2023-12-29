@@ -8,7 +8,9 @@ data class ReservationAddFormState(
     val reservation: ReservationItem = ReservationItem(),
     val loading: Boolean = false,
     val errors: Set<ReservationAddFormError> = emptySet(),
-    val timeOptions: List<DropdownMenuItem> = emptyList()
+    val timeOptions: List<DropdownMenuItem> = emptyList(),
+    val errorSave: Boolean = false,
+    val noMoreTimes: Boolean = false,
 )
 
 enum class ReservationAddFormError {
