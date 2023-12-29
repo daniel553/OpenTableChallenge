@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">OpenTableChallenge</string>
+
+    //Nav titles
+    <string name="nav_reservation">Reservations</string>
+    <string name="nav_add_reservation">Add Reservation</string>
+
+    //Reservations
+    <string name="reservation_list_empty_title">No reservations here yet</string>
+    <string name="reservation_list_empty_subtitle">Here you can see all your reservations</string>
+    <string name="reservation_list_empty_action">Reserve now</string>
+    <string name="reservation_list_error_title">Something went wrong</string>
+    <string name="reservation_list_error_subtitle">It seems that reservation data is corrupted, please contact restaurant.</string>
+
+    //Add reservation
+    <string name="add_form_name">Name</string>
+    <string name="add_form_time">Select time</string>
+    <string name="add_form_add_button">Save</string>
+    <string name="not_available"> - Not Available</string>
+    <string name="add_error_save">Reservation was not saved, try again!</string>
+    <string name="add_error_no_more_reservation_times">No more space today, try tomorrow!</string>
 </resources>
